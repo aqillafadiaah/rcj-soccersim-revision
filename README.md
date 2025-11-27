@@ -14,38 +14,41 @@ as well as a sample simulated team of robots with some basic strategy.
 
 ## Installation
 
-1. Install Python 3.7 (or higher) 64 bit from the [official website](https://www.python.org/downloads/) (please make sure it is version 3.7 or higher for Windows, and 3.8 or higher if installing on MacOS or Linux). On Windows, please make sure your Python is referenced in Windows PATH by selecting the option "Add Python 3.x to PATH" during the installation. Check out this great [installation guide](https://realpython.com/installing-python/) if you need some help!
+The first thing you need to prepare is installing Python. Go to https://www.python.org/downloads/
+ and download the latest version for your system.
 
-2. Download [Webots](https://www.cyberbotics.com/#download) from their official website. Currently, version R2025b is stable with the Soccer Simulator. You can find detailed installation procedure on the official [Webots Installation guide](https://cyberbotics.com/doc/guide/installation-procedure).
+Next, download the Soccer Simulator. You can get it from https://github.com/robocup-junior/rcj-soccersim.git
+ or from the revised version provided to you. After opening the page, click the Code button and select Download ZIP.
 
-3. Clone the rcj-soccersim repository to your computer by downloading the ZIP file from [here](https://github.com/robocup-junior/rcj-soccersim/archive/master.zip) or running
+If you prefer not to extract a ZIP file, you can download the project directly through the terminal or command prompt using the following command. Wait a moment until all files finish downloading.
 
-        git clone https://github.com/robocup-junior/rcj-soccersim.git
+If you downloaded the ZIP file from the website, extract it.
 
-4. Finally, run Webots, go to `Tools > Preferences > Python command` and set it to `python` or `python3` to point Webots to Python 3. Depending on your system, the reference to Python 3 can be via the command `python` or `python3`. More information on how to configure Webots to work with Python can be found [here](https://cyberbotics.com/doc/guide/using-python).
+Before opening Webots, make sure you have all the required files prepared properly.
 
-## Running Soccer Sim
+The next step is optional, but recommended if you plan to edit the code or contribute to this repository. This keeps the project organized. Open the terminal or command prompt and run the command shown below.
 
-1. Use Webots to open the downloaded `soccer.wbt` world located in the `worlds`
-   directory (via `File > Open World`)
+After that, open Webots. Go to File > Open World, navigate to the worlds folder, and select soccer.wbt.
 
-2. Run/pause the simulation by clicking the corresponding buttons on the top-part of Webots window. Note that the controllers that are responsible for the
-   various robots on the field can be found in the `controllers/` directory.
+Once loaded, you’ll see the soccer field, six differential-drive robots (two teams with three robots each), both goals, and the arena boundaries.
 
-## Notes
+Set the starting formation for your match strategy. In this example, we use a 2–1 formation: B1 and Y1 as strikers, B2 and Y2 as midfielders, and B3 and Y3 as goalkeepers.
 
-A specific `webots` world can be executed directly from the command line as
-follows:
+Open the Scene Tree panel on the left. This panel contains all robot and arena configurations. Adjust the translation and rotation of each robot to position them according to the 2–1 formation. Leave the ball unchanged.
 
-        webots --mode=run worlds/soccer.wbt
+Still in the Scene Tree, check the controller assigned to each robot.
+• Blue team uses rcj_soccer_team_blue.py
+• Yellow team uses rcj_soccer_team_yellow.py
+• The ball uses rcj_soccer_ball.py
+• The referee supervisor (listed as a robot in the Scene Tree) uses rcj_soccer_referee_supervisor.py
 
-Which allows for at least some automation. Further info can be found in the
-[docs](https://cyberbotics.com/doc/guide/starting-webots).
+If you need additional Python libraries, such as pandas, math, or OpenCV, open the terminal and install them with a command like this:
 
-The sample players as well as the "automatic referee" are implemented in
-Python, which should allow for easily updating the code to match the rules and
-avoid any compilation issues.
+Run the simulation by pressing the Play button.
 
+To record a match, go to File > Make Movie. Wait until the match finishes to complete the recording.
+
+To view the match history, open Visual Studio Code, select Open Folder, choose the rcj-soccersim folder, then navigate to controllers/rcj_soccer_referee_supervisor. Inside the reflog folder, you’ll find all recorded match logs.
 ## Development
 
 We are open to contributions! Have a look at our [issues](https://github.com/robocup-junior/rcj-soccersim/issues).
