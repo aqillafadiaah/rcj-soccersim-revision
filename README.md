@@ -1,23 +1,77 @@
-# RCJ_SOCCERSIM-AQIVERSION
-Custom RCJ Soccer Sim (Webots) featuring a tactical 2-1 formation. Includes aggressive Proportional Control strikers with smooth curving, smart midfielders with kick-off delay support, and advanced sliding goalies with Heading Lock &amp; GPS clamping. Optimized for stability and coordination.
+# RCJ Soccer Simulator
 
+This is the official repository of the RoboCupJunior Soccer Simulator. The
+simulator is based on [Webots](https://github.com/cyberbotics/webots) and this
+repository provides both the "automatic referee" (which implements the [Soccer
+Simulated Rules](https://github.com/robocup-junior/soccer-rules-simulation))
+as well as a sample simulated team of robots with some basic strategy.
 
-This repository contains the complete source code and configuration for a customized RoboCupJunior Soccer Simulation (RCJ SoccerSim) environment built on Webots. The project includes modifications to robot logic, team strategies, and referee rules, making it easier to understand, edit, and extend the simulation.
+![Soccer Sim](./docs/docs/images/soccer_sim.png)
 
-Each robot program (B1, Y1, B2, Y2, B3, Y3) is located in the controllers/ directory. The structure is modular. The Blue Team is inside controllers/rcj_soccer_team_blue/, and the Yellow Team is inside controllers/rcj_soccer_team_yellow/. In each folder, the file rcj_soccer_team_blue.py or rcj_soccer_team_yellow.py works as a router. It reads the robot’s name from the simulator and forwards the execution to the correct logic file: robot1.py for the Striker, robot2.py for the Midfielder, and robot3.py for the Goalie.
+*Learn more in the [documentation](https://robocup-junior.github.io/rcj-soccersim/).*
 
-Every robot uses a combination of Infrared sensors to detect the ball, a Compass for orientation, and GPS for position tracking. Each role uses its own logic.
+# How do I try this out?
 
-The Striker (Robot 1) relies on Proportional Control. It constantly measures the ball’s angle relative to its body and adjusts wheel speeds proportionally. This lets the robot chase the ball aggressively with smooth curving motion, creating a fast, “Brazil-style” attacking behavior.
+## Installation
 
-The Midfielder (Robot 2) follows a Support & Delay logic. At kick-off, it intentionally starts slowly to give the Striker room. Throughout the match, it focuses on keeping distance and only moves in aggressively when the ball enters its defensive radius.
+1. Install Python 3.7 (or higher) 64 bit from the [official website](https://www.python.org/downloads/) (please make sure it is version 3.7 or higher for Windows, and 3.8 or higher if installing on MacOS or Linux). On Windows, please make sure your Python is referenced in Windows PATH by selecting the option "Add Python 3.x to PATH" during the installation. Check out this great [installation guide](https://realpython.com/installing-python/) if you need some help!
 
-The Goalie (Robot 3) uses Lateral Tracking and Heading Lock. The robot stands sideways and maintains its orientation using compass data. When the ball enters the goal area, the robot slides left and right to block it, while GPS keeps it from leaving the goal zone.
+2. Download [Webots](https://www.cyberbotics.com/#download) from their official website. Currently, version R2025b is stable with the Soccer Simulator. You can find detailed installation procedure on the official [Webots Installation guide](https://cyberbotics.com/doc/guide/installation-procedure).
 
-Match rules are controlled by the Referee Supervisor, located in controllers/rcj_soccer_referee_supervisor/ and the referee/ module. Initial positions and formations are defined in referee/consts.py. Penalties, goal detection, “Lack of Progress,” and general game flow are handled inside referee/referee.py. Team names and match duration can be adjusted through rcj_soccer_referee_supervisor.py or environment variables. In this customized version, the referee logic has been tweaked, for example preventing unwanted goalie resets and allowing strikers to search for the ball without penalties.
+3. Clone the rcj-soccersim repository to your computer by downloading the ZIP file from [here](https://github.com/robocup-junior/rcj-soccersim/archive/master.zip) or running
 
-If you only want to watch the match, the latest revised files are available on the provided website.
+        git clone https://github.com/robocup-junior/rcj-soccersim.git
 
-You can also customize each robot’s visual appearance. The simplest method is replacing the default texture files (such as blue.png or yellow.png) in worlds/soccer/ with your own images using the same filename. Alternatively, open soccer.wbt in Webots, locate the robot node, and change the ImageTexture URL to point to your custom image.
+4. Finally, run Webots, go to `Tools > Preferences > Python command` and set it to `python` or `python3` to point Webots to Python 3. Depending on your system, the reference to Python 3 can be via the command `python` or `python3`. More information on how to configure Webots to work with Python can be found [here](https://cyberbotics.com/doc/guide/using-python).
 
-All these modifications make the simulation more expressive, both in strategy and appearance, and give you plenty of room to refine team behavior or experiment with new ideas.
+## Running Soccer Sim
+
+1. Use Webots to open the downloaded `soccer.wbt` world located in the `worlds`
+   directory (via `File > Open World`)
+
+2. Run/pause the simulation by clicking the corresponding buttons on the top-part of Webots window. Note that the controllers that are responsible for the
+   various robots on the field can be found in the `controllers/` directory.
+
+## Notes
+
+A specific `webots` world can be executed directly from the command line as
+follows:
+
+        webots --mode=run worlds/soccer.wbt
+
+Which allows for at least some automation. Further info can be found in the
+[docs](https://cyberbotics.com/doc/guide/starting-webots).
+
+The sample players as well as the "automatic referee" are implemented in
+Python, which should allow for easily updating the code to match the rules and
+avoid any compilation issues.
+
+## Development
+
+We are open to contributions! Have a look at our [issues](https://github.com/robocup-junior/rcj-soccersim/issues).
+Before you make a pull request, make sure the code is formatted
+with `black` and `isort`, and `flake8` issues are fixed.
+
+To do so, follow these steps:
+
+1. Create virtualenv `python3 -m venv venv`
+2. Install `pip-tools` by running `pip install pip-tools`
+3. Install development modules `pip-sync requirements/development.txt`
+4. Setup pre-commit hook `pre-commit install`. This hook will not allow you to
+commit in case one of the checkers raises an error.
+5. In order format the code, run the formatters in this order
+    * `isort .`
+    * `black .`
+6. Manually fix error raised by `flake8 .`
+
+### Updating dependencies
+
+Dependencies for development are managed by pip-tools. To compile current
+dependencies run
+
+```bash
+$ pip-compile -o requirements/development.txt requirements/development.in
+```
+
+In order to update dependencies, use `--upgrade` switch.
+
